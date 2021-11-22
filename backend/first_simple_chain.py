@@ -3,6 +3,7 @@ import secrets
 import random
 import names
 
+
 class Transaction:
 
     def __init__(self, sender, reciever, amount):
@@ -20,6 +21,7 @@ class Transaction:
 
     def get_id(self):
         return self.transaction_id
+
 
 class Wallet:
 
@@ -46,6 +48,7 @@ class Wallet:
     def get_name(self):
         return self.name
 
+
 class SingleBlock:
 
     def __init__(self, previous_block_hash, transaction_list):
@@ -58,7 +61,8 @@ class SingleBlock:
 
         # 1 line below - hashing objects
         # self.transaction_list = transaction_list
-        self.block_data = f"Transactions: {self.transaction_list}, hash of the previous block: {self.previous_block_hash}"
+        self.block_data = f"Transactions: {self.transaction_list}, " \
+                          f"hash of the previous block: {self.previous_block_hash}"
         self.block_hash = hashlib.sha256(self.block_data.encode()).digest()  # Digesting because encode() returns an obj
 
     def execute_transaction(self, transaction_list):
@@ -67,7 +71,8 @@ class SingleBlock:
             transaction.reciever.remove_balance(transaction.amount)
             ###
             '''print(f'{transaction.sender.get_name()} (ID: {transaction.sender.get_id()}) '
-                  f'sent {transaction.amount} to {transaction.reciever.get_name()} (ID: {transaction.reciever.get_id()}).'
+                  f'sent {transaction.amount} to 
+                  {transaction.reciever.get_name()} (ID: {transaction.reciever.get_id()}).'
                   f'Transaction ID is {transaction.get_id()}')'''
 
 
@@ -99,9 +104,6 @@ class VehicleChain:
         print('END OF THE BLOCKCHAIN')
 
 
-
-
-
 def dummy_people(no_of_people):
     list_of_people = []
     for i in range(no_of_people):
@@ -109,6 +111,7 @@ def dummy_people(no_of_people):
         list_of_people.append(person)
 
     return list_of_people
+
 
 def dummy_transactions(people, no_of_transactions):
     list_of_transactions = []
@@ -118,6 +121,7 @@ def dummy_transactions(people, no_of_transactions):
         list_of_transactions.append(Transaction(sender, reciever, random.randrange(0, 100)))
 
     return list_of_transactions
+
 
 def rand_examples():
     people = dummy_people(5)
@@ -132,12 +136,13 @@ def rand_examples():
 
     blockcejn.display_chain()
 
+
 def first_demo():
     print('//////START of the first demo/////////')
     block_chain = VehicleChain()
     sender = dummy_people(1)[0]
     reciever = dummy_people(1)[0]
-    random_amount = random.randrange(0,100)
+    random_amount = random.randrange(0, 100)
 
     print(f'Sender {sender.get_name()}  (ID:{sender.get_id()}) has a balance of {sender.get_balance()}')
     print(f'Reciever {reciever.get_name()} (ID:{reciever.get_id()}) has a balance of {reciever.get_balance()}')
@@ -151,6 +156,7 @@ def first_demo():
     print(f'Reciever {reciever.get_name()} (ID:{reciever.get_id()}) has a balance of {reciever.get_balance()}')
     print('//////END of the first demo/////////\n\n')
 
+
 def second_demo():
     print('//////START of the second demo/////////')
     block_chain = VehicleChain()
@@ -159,6 +165,6 @@ def second_demo():
     block_chain.display_chain()
     print('//////END of the second demo/////////\n\n')
 
+
 first_demo()
 second_demo()
-
