@@ -1,3 +1,4 @@
+import datetime
 import hashlib
 import secrets
 import random
@@ -21,6 +22,28 @@ class Transaction:
 
     def get_id(self):
         return self.transaction_id
+
+
+class Contract(Transaction):
+    def __init__(self, purpose, date, location, sender, reciever, amount):
+        self.purpose = purpose
+        self.date = date
+        self.location = location
+        self.transaction = super().__init__(sender, reciever, amount)
+
+    def transaction_info(self):
+        return f'{self.sender.get_name()} (ID:{self.sender.get_id()}) sent {self.amount} coins to' \
+               f' {self.reciever.get_name()} (ID:{self.reciever.get_id()}) for purpose {self.purpose} in ' \
+               f'location {self.location} on date {self.date}'
+
+    def get_purpose(self):
+        return self.purpose
+
+    def get_date(self):
+        return self.date
+
+    def get_location(self):
+        return self.location
 
 
 class Wallet:
@@ -166,5 +189,16 @@ def second_demo():
     print('//////END of the second demo/////////\n\n')
 
 
+def smart_contract_demo():
+    first_person = dummy_people(1)[0]
+    second_person = dummy_people(1)[0]
+    block_chain = VehicleChain()
+    transaction = Contract("Rent a car for 1 hour", "11.12.2021", "Ljubljana", first_person, second_person, 200)
+    print(transaction.get_purpose(), transaction.get_location(), transaction.get_date(), transaction.get_id())
+    block_chain.create_block_from_transaction([transaction])
+    block_chain.display_chain()
+
+
 first_demo()
 second_demo()
+smart_contract_demo()
