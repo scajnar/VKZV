@@ -1,7 +1,9 @@
 from flask import Response, request
-from database.models import Movie, Block
+from database.models import Movie, Block, Wallet, Transaction
 from flask_restful import Resource
 from other import first_simple_chain
+import mongoengine as me
+
 chain = first_simple_chain.chain
 class MockBlock(Resource):
 
@@ -22,14 +24,34 @@ class MockBlock(Resource):
 
 class BlocksApi(Resource):
     def get(self):
-        block = Block.objects.to_json()
-        return Response(block, mimetype="application/json", status=200)
+        blocks = Block.objects().to_json()
+        return Response(blocks, mimetype="application/json", status=200)
 
     def post(self):
         body = request.get_json()
-        block = Block(**body).save()
-        block_hash = block.block_hash
-        return {"block_hash": str(block_hash)}, 200
+        chain.generate_random_block()
+        block = chain.last_block.create_block_from_transaction()
+        Block(**block).save()
+        return block, 200
+
+class WalletApi(Resource):
+    def post(self,name):
+        wallet = first_simple_chain.Wallet(name=name)
+        data = wallet.get_wallet_data()
+        Wallet(**data).save()
+        return data, 200
+
+    def get(self, name):
+        blocks = Wallet.objects.get(id_number=name).to_json()
+        return Response(blocks, mimetype="application/json", status=200)
+
+class WalletsApi(Resource):
+    def get(self):
+        wallets = Wallet.objects().to_json()
+        return Response(wallets, mimetype="application/json", status=200)
+
+    def delete(self):
+        wallets = Wallet.objects.delete()
 
 class MoviesApi(Resource):
     def get(self):

@@ -70,8 +70,15 @@ class Wallet: # person
         self.balance = self.balance - amount
 
     def get_name(self):
-        return self.name
+        return (self.name)
 
+    def get_wallet_data(self):
+        val = {
+            "name": self.name,
+            "id_number": self.id_number,
+            "balance": self.balance
+        }
+        return val
 
 class SingleBlock:
 
