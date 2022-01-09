@@ -101,9 +101,9 @@ class SingleBlock:
 
     def get_block_data(self):
         val = {
-            "previous_block_hash" : (self.previous_block_hash),
+            "previous_block_hash" : str(self.previous_block_hash),
             "transaction_list" : (self.transaction_list),
-            "block_data" : (self.block_data),
+            "block_data" : str(self.block_data),
             "block_hash" : str((self.block_hash)),
         }
         return val
@@ -116,6 +116,10 @@ class VehicleChain:
 
     def generate_first_block(self):
         self.chain.append(SingleBlock(0, [Transaction(Wallet('First sender'), Wallet('First reciever'), 0)]))
+
+    def generate_random_block(self):
+        previous_block_hash = self.last_block.block_hash
+        self.chain.append(SingleBlock(previous_block_hash,[Transaction(Wallet(names.get_full_name()), Wallet(names.get_full_name()), random.randrange(0, 100))]))
 
     @property
     def last_block(self):
@@ -135,6 +139,11 @@ class VehicleChain:
             print('\n')
         print('END OF THE BLOCKCHAIN')
 
+    def get_chain(self):
+        arr = []
+        for block in self.chain:
+            arr.append(block.get_block_data)
+        return arr
 
 def dummy_people(no_of_people):
     list_of_people = []
@@ -193,7 +202,11 @@ def second_demo():
     print('//////START of the second demo/////////')
     block_chain = VehicleChain()
     people = dummy_people(5)
-    block_chain.create_block_from_transaction(dummy_transactions(people, 5))
+    block_chain.create_block_from_transaction(dummy_transactions(people, 1))
+    block_chain.create_block_from_transaction(dummy_transactions(people, 1))
+    block_chain.create_block_from_transaction(dummy_transactions(people, 1))
+    block_chain.create_block_from_transaction(dummy_transactions(people, 1))
+
     block_chain.display_chain()
     print('//////END of the second demo/////////\n\n')
 
@@ -220,7 +233,8 @@ def listing_demo():
 
 
 
-first_demo()
-second_demo()
-smart_contract_demo()
-listing_demo()
+#first_demo()
+# second_demo()
+#smart_contract_demo()
+#listing_demo()
+chain = VehicleChain()

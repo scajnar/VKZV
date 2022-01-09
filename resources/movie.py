@@ -2,19 +2,23 @@ from flask import Response, request
 from database.models import Movie, Block
 from flask_restful import Resource
 from other import first_simple_chain
-
-
+chain = first_simple_chain.chain
 class MockBlock(Resource):
+
     def get(self):
-        block = Block.objects.to_json()
-        return Response(block, mimetype="application/json", status=200)
+        blocks = Block.objects().to_json()
+        return Response(blocks, mimetype="application/json", status=200)
 
     def post(self):
         body = request.get_json()
-        chain = first_simple_chain.VehicleChain()
-        chain.generate_first_block()
+        chain.generate_random_block()
         block = chain.last_block.get_block_data()
+        Block(**block).save()
         return block, 200
+
+    def delete(self):
+        block = Block.objects.delete()
+        return "", 200
 
 class BlocksApi(Resource):
     def get(self):
