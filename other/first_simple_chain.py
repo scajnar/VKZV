@@ -1,9 +1,10 @@
-import datetime
 import hashlib
 import secrets
 import random
 import names
-import vehicles
+from other import vehicles
+from other import listings
+import json
 
 class Transaction:
 
@@ -46,7 +47,7 @@ class Contract(Transaction):
         return self.location
 
 
-class Wallet:
+class Wallet: # person
 
     def __init__(self, name):
         self.name = name
@@ -98,6 +99,14 @@ class SingleBlock:
                   {transaction.reciever.get_name()} (ID: {transaction.reciever.get_id()}).'
                   f'Transaction ID is {transaction.get_id()}')'''
 
+    def get_block_data(self):
+        val = {
+            "previous_block_hash" : (self.previous_block_hash),
+            "transaction_list" : (self.transaction_list),
+            "block_data" : (self.block_data),
+            "block_hash" : str((self.block_hash)),
+        }
+        return val
 
 class VehicleChain:
 
@@ -163,8 +172,8 @@ def rand_examples():
 def first_demo():
     print('//////START of the first demo/////////')
     block_chain = VehicleChain()
-    sender = dummy_people(1)[0]
-    reciever = dummy_people(1)[0]
+    sender = dummy_people(1)[0] #person 1 - wallet
+    reciever = dummy_people(1)[0] # person2 -wallet
     random_amount = random.randrange(0, 100)
 
     print(f'Sender {sender.get_name()}  (ID:{sender.get_id()}) has a balance of {sender.get_balance()}')
@@ -198,7 +207,20 @@ def smart_contract_demo():
     block_chain.create_block_from_transaction([transaction])
     block_chain.display_chain()
 
+def listing_demo():
+    block_chain = VehicleChain()
+    person1 = dummy_people(1)[0]
+    person2 = dummy_people(1)[0]
+    car = vehicles.Car("Fast car", 'Ford', 'TI250', 120)
+    new_listing = listings.Listing(car, "Ljubljana", '24h', 48, person1, 120)
+    contract = Contract(new_listing, '22.1.2021', new_listing.location, new_listing.user, person2, new_listing.price)
+    block_chain.create_block_from_transaction([contract])
+    block_chain.display_chain()
+    print(person2.balance, person1.get_balance())
+
+
 
 first_demo()
 second_demo()
 smart_contract_demo()
+listing_demo()
