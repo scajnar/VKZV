@@ -52,3 +52,8 @@ class Listing(db.DynamicDocument):
     price = me.IntField(required=True)
     location = me.StringField(required=True)
     id_number = me.IntField(required=True)
+
+class VehBlock(db.DynamicDocument):
+    previous_block_hash = me.StringField(required=True)
+    events = me.ListField(required=True)
+    block_hash = me.StringField(required=True)

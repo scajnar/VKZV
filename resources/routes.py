@@ -1,8 +1,6 @@
-from .movie import MoviesApi, MovieApi, Block, BlocksApi, MockBlock, WalletApi, WalletsApi
+from .movie import Block, BlocksApi, MockBlock, WalletApi, WalletsApi
 from .movie import *
 def initialize_routes(api):
-    api.add_resource(MoviesApi, '/api/movies')
-    api.add_resource(MovieApi, '/api/movies/<id>')
     api.add_resource(BlocksApi, '/api/blocks/')
     api.add_resource(MockBlock, '/api/mockblock/')
     api.add_resource(WalletApi, '/api/wallet/<name>')
@@ -14,6 +12,8 @@ def initialize_routes(api):
     api.add_resource(ClaimListingApi, "/api/listing/claim/<listing_id>/<claiming_user_id>/")
     api.add_resource(GetAllListingsApi,"/api/listings")
     api.add_resource(DeleteAllApi, "/api/delete")
+    api.add_resource(VehChainApi, "/api/chain/")
+    api.add_resource(TodB, "/api/block/")
 #42113 vehicle id
 #51537 poster user id
 #88320 listing id

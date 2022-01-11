@@ -1,14 +1,68 @@
+import json
+import http
 from flask import Response, request
 from database.models import Movie, Block, Wallet, Transaction
 from database.models import *
 from flask_restful import Resource
 from other import first_simple_chain
 from other import vehicles, listings
-import mongoengine as me
-
+import hashlib
+import secrets
+import random
+import json as js
+from database import models
+import requests
 chain = first_simple_chain.chain
-class BlockChain(Resource):
-    
+class SinBlock:
+    def __init__(self, previous_block_hash, events):
+        self.previous_block_hash = previous_block_hash
+        self.block_input_data = {
+            "previous_block_hash": previous_block_hash,
+            "events": events,
+        }
+        self.block_hash = hashlib.sha256(js.dumps(self.block_input_data).encode()).digest()
+        self.block_data = {
+            "previous_block_hash": str(self.previous_block_hash),
+            "events": [js.dumps(events)],
+            "block_hash": str(self.block_hash),
+        }
+        #r = requests.post(f'http://localhost:5000/api/block/', data=self.block_data)
+
+
+    def get_block_data(self):
+        return self.block_data
+
+class TodB(Resource):
+    def post(self):
+        body = request.get_json()
+        block = VehBlock(**body).save()
+        return 200
+
+
+
+class VehChain:
+    def __init__(self):
+        self.chain = []
+        self.generate_first_block()
+
+    def generate_first_block(self):
+        self.chain.append(SinBlock(12345678910, "No events"))
+
+    def get_last_block_data(self):
+        return self.chain[-1].get_block_data()
+
+vehicle_chain = VehChain()
+
+
+def create_block_from_events(events=None):
+    vehicle_chain.chain.append(SinBlock(vehicle_chain.chain[-1].block_hash, events))
+
+class VehChainApi(Resource):
+    def get(self):
+        blocks = VehBlock.objects().to_json()
+        return Response(blocks, mimetype="application/json", status=200)
+
+
 class MockBlock(Resource):
 
     def get(self):
@@ -94,18 +148,6 @@ class CreateListingApi(Resource):
         Listing(**data).save()
         return data, 200
 
-class MoviesApi(Resource):
-    def get(self):
-        movies = Movie.objects().to_json()
-        return Response(movies, mimetype="application/json", status=200)
-
-    def post(self):
-        body = request.get_json()
-        movie = Movie(**body).save()
-        print("Penis")
-        id = movie.id
-        return {'id': str(id)}, 200
-
 class ClaimListingApi(Resource):
     def post(self, listing_id, claiming_user_id):
         listing = Listing.objects.get(id_number=listing_id)
@@ -135,19 +177,4 @@ def execute_transaction(sender_id, reciever_id, price):
     reciever = Wallet.objects.get(id_number=reciever_id)
     reciever.balance += price
     reciever.save()
-
-
-class MovieApi(Resource):
-    def put(self, id):
-        body = request.get_json()
-        Movie.objects.get(id=id).update(**body)
-        return '', 200
-
-    def delete(self, id):
-        movie = Movie.objects.get(id=id).delete()
-        return '', 200
-
-    def get(self, id):
-        movies = Movie.objects.get(id=id).to_json()
-        return Response(movies, mimetype="application/json", status=200)
-
+    chain.create_block_from_transaction([Transaction])
