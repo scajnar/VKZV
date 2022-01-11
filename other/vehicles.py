@@ -29,6 +29,9 @@ class Car(Vehicle):
     def get_horsepower(self):
         return self.horsepower
 
+    def get_id_number(self):
+        return self.id_number;
+
     def get_vehicle_data(self):
         val = {
             "name": self.name,

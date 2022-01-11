@@ -46,7 +46,7 @@ class Vehicle(db.DynamicDocument):
 
 class Listing(db.DynamicDocument):
     vehicle = me.IntField(required=True)
-    time_of_sharing = me.IntField(required=True) # In hours
+    time_of_sharing = me.StringField(required=True) # In hours
     listing_time = me.StringField(required=True)
     user = me.IntField(required=True)
     price = me.IntField(required=True)

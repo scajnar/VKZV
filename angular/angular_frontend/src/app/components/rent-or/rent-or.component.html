@@ -1,6 +1,6 @@
 <body>
 <div class = "center">
-  <button routerLink="/all" >Rent a vehicle</button><button  routerLink="/post">Post a vehicle</button>
+  <button routerLink="/all" >Rent a vehicle</button><button [disabled]="canPost"  routerLink="/post">Post a vehicle</button>
 </div>
 
 <div class = "center2">

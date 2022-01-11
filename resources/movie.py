@@ -7,6 +7,8 @@ from other import vehicles, listings
 import mongoengine as me
 
 chain = first_simple_chain.chain
+class BlockChain(Resource):
+    
 class MockBlock(Resource):
 
     def get(self):
@@ -41,7 +43,7 @@ class WalletApi(Resource):
         wallet = first_simple_chain.Wallet(name=name)
         data = wallet.get_wallet_data()
         Wallet(**data).save()
-        return data, 200
+        return wallet.get_id(), 200
 
     def get(self, name):
         blocks = Wallet.objects.get(id_number=name).to_json()
@@ -66,7 +68,7 @@ class PostVehicleApi(Resource):
         car = vehicles.Car(name=name, brand=brand, model=model, horsepower=horsepower)
         data = car.get_vehicle_data()
         Vehicle(**data).save()
-        return data, 200
+        return car.get_id_number(), 200
 
 class GetAllVehiclesApi(Resource):
     def get(self):
@@ -112,7 +114,19 @@ class ClaimListingApi(Resource):
         claimer = claiming_user_id
         execute_transaction(claimer, lister, price)
         # Listing.objects.get(id_number=listing_id).delete()
-        return "success", 200
+        return 123, 200
+
+class GetAllListingsApi(Resource):
+    def get(self):
+        listings = Listing.objects().to_json()
+        return Response(listings, mimetype="application/json", status=200)
+
+class DeleteAllApi(Resource):
+    def get(self):
+        Wallet.objects.delete()
+        Vehicle.objects.delete()
+        Listing.objects.delete()
+        return Response("ide", mimetype="application/json", status=200)
 
 def execute_transaction(sender_id, reciever_id, price):
     sender = Wallet.objects.get(id_number=sender_id)
