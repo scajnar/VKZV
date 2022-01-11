@@ -1,4 +1,4 @@
-
+import secrets
 class Vehicle:
 
     def __init__(self, name):
@@ -17,6 +17,7 @@ class Car(Vehicle):
         self.brand = brand
         self.model = model
         self.horsepower = horsepower
+        self.id = secrets.randbelow(99999)
         super().__init__(name)
 
     def get_brand(self):

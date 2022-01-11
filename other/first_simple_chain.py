@@ -24,6 +24,14 @@ class Transaction:
     def get_id(self):
         return self.transaction_id
 
+    def get_transaction_data(self):
+        val = {
+            "sender": self.sender,
+            "reciever": self.reciever,
+            "id_number": self.amount,
+            "balance" : self.transaction_id
+        }
+        return val
 
 class Contract(Transaction):
     def __init__(self, purpose, date, location, sender, reciever, amount):
@@ -171,6 +179,7 @@ def dummy_transactions(people, no_of_transactions):
     return list_of_transactions
 
 
+
 def rand_examples():
     people = dummy_people(5)
     blockcejn = VehicleChain()
@@ -243,5 +252,5 @@ def listing_demo():
 #first_demo()
 # second_demo()
 #smart_contract_demo()
-#listing_demo()
+listing_demo()
 chain = VehicleChain()

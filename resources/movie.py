@@ -53,6 +53,14 @@ class WalletsApi(Resource):
     def delete(self):
         wallets = Wallet.objects.delete()
 
+class TransactionApi(Resource):
+    def post(self, sender, reciever, ammount):
+        # transaction = Transaction
+        pass
+
+
+class VehicleApi(Resource):
+    def post(self):
 class MoviesApi(Resource):
     def get(self):
         movies = Movie.objects().to_json()
@@ -64,7 +72,6 @@ class MoviesApi(Resource):
         print("Penis")
         id = movie.id
         return {'id': str(id)}, 200
-
 
 class MovieApi(Resource):
     def put(self, id):

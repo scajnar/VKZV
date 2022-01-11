@@ -1,0 +1,14 @@
+<body>
+<div class = "center">
+  <button routerLink="/all" >Rent a vehicle</button><button  routerLink="/post">Post a vehicle</button>
+</div>
+
+<div class = "center2">
+  <button (click)="addNewUser()">Add new user</button>
+  <div class="flex">
+    Name: <input [(ngModel)]="newUser" type="text">
+  </div>
+</div>
+</body>
+
+
