@@ -12,7 +12,7 @@ class Block(db.DynamicDocument):
     block_data = me.StringField(required=True)
     block_hash = me.StringField(required=True)
 
-class Wallet(db.DynamicDocument):
+class Wallet(me.DynamicEmbeddedDocument):
     name = me.StringField(required=True)
     id_number = me.IntField(required=True, unique=True)
     balance = me.IntField()
@@ -25,6 +25,7 @@ class Wallet(db.DynamicDocument):
 '''
 
 class Transaction(db.DynamicDocument):
-    name = me.StringField(required=True, unique=True)
+    sender = me.EmbeddedDocumentField(Wallet)
+    reciever = me.EmbeddedDocumentField(Wallet)
     id_number = me.StringField(required=True, unique=True)
     balance = me.IntField()

@@ -1,0 +1,29 @@
+<body>
+<button routerLink="/all">Go back</button>
+<br>
+<b>VEHICLE INFO</b>
+<div>
+  <br>
+  <div class="flex">
+    Type: <input [value]="temp[0].Type" type="text" DISABLED>
+  </div>
+  <br>
+  <div class="flex">
+    Name: <input [value]="temp[0].Name" type="text" DISABLED>
+  </div>
+  <br>
+  <div class="flex">
+    Brand: <input [value]="temp[0].Brand"  type="text" DISABLED>
+  </div>
+  <br>
+  <div class="flex">
+    Model: <input [value]="temp[0].Model"  type="text" DISABLED>
+  </div>
+  <br>
+  <div class="flex">
+    Horsepower: <input [value]="temp[0].Horsepower" type="number" DISABLED>
+  </div>
+  <br>
+</div>
+<button class="button" (click)="borrowVehicle()">Borrow Vehicle</button>
+</body>

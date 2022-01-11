@@ -1,0 +1,32 @@
+<body>
+<button routerLink="">Go back</button>
+<br>
+<b>POST A VEHICLE</b>
+<div [formGroup]="vehicleForm">
+  <br>
+  <div class="flex">
+    Type: <select formControlName="Type">
+      <option value="Bike">Bike</option>
+      <option value="Car">Car</option>
+    </select>
+  </div>
+  <br>
+  <div class="flex">
+    Name: <input formControlName="Name" type="text">
+  </div>
+  <br>
+  <div class="flex">
+    Brand: <input formControlName="Brand" type="text">
+  </div>
+  <br>
+  <div class="flex">
+    Model: <input formControlName="Model" type="text">
+  </div>
+  <br>
+  <div class="flex">
+    Horsepower: <input formControlName="Horsepower" type="number">
+  </div>
+  <br>
+</div>
+<button class="button" (click)="postVehicle()">Create</button>
+</body>

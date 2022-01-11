@@ -1,0 +1,22 @@
+<body>
+<body>
+<button routerLink="">Go back</button>
+<br>
+<div *ngFor="let car of temp">
+<div class = "one_car">
+  <div class="vehicle_info">
+    <b>Vehicle name:</b> {{car.Name}}
+  </div>
+
+  <div class="vehicle_info">
+    <b>Vehicle type:</b> {{car.Type}}
+  </div>
+
+  <div class="vehicle_info">
+    <b>Vehicle brand:</b> {{car.Brand}}
+  </div>
+
+  <button (click)="viewVehicle(car)">View Vehicle</button>
+</div>
+</div>
+</body>
