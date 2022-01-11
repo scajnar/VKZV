@@ -1,7 +1,9 @@
 from flask import Response, request
 from database.models import Movie, Block, Wallet, Transaction
+from database.models import *
 from flask_restful import Resource
 from other import first_simple_chain
+from other import vehicles, listings
 import mongoengine as me
 
 chain = first_simple_chain.chain
@@ -59,8 +61,37 @@ class TransactionApi(Resource):
         pass
 
 
-class VehicleApi(Resource):
-    def post(self):
+class PostVehicleApi(Resource):
+    def post(self, name, brand, model, horsepower):
+        car = vehicles.Car(name=name, brand=brand, model=model, horsepower=horsepower)
+        data = car.get_vehicle_data()
+        Vehicle(**data).save()
+        return data, 200
+
+class GetAllVehiclesApi(Resource):
+    def get(self):
+        vehicles = Vehicle.objects().to_json()
+        return Response(vehicles, mimetype="application/json", status=200)
+
+class GetOneVehicleApi(Resource):
+    def get(self, id):
+        vehicle = Vehicle.objects.get(id_number=id).to_json()
+        return Response(vehicle, mimetype="application/json", status=200)
+
+class CreateListingApi(Resource):
+    def post(self, vehicle_id, time_of_sharing, listing_time, user_id, price, location):
+        listing = listings.Listing(
+            vehicle=vehicle_id,
+            time_of_sharing=time_of_sharing,
+            listing_time=listing_time,
+            user=user_id,
+            price=price,
+            location=location,
+        )
+        data = listing.get_listing_data()
+        Listing(**data).save()
+        return data, 200
+
 class MoviesApi(Resource):
     def get(self):
         movies = Movie.objects().to_json()
@@ -72,6 +103,25 @@ class MoviesApi(Resource):
         print("Penis")
         id = movie.id
         return {'id': str(id)}, 200
+
+class ClaimListingApi(Resource):
+    def post(self, listing_id, claiming_user_id):
+        listing = Listing.objects.get(id_number=listing_id)
+        lister = listing.user
+        price = listing.price
+        claimer = claiming_user_id
+        execute_transaction(claimer, lister, price)
+        # Listing.objects.get(id_number=listing_id).delete()
+        return "success", 200
+
+def execute_transaction(sender_id, reciever_id, price):
+    sender = Wallet.objects.get(id_number=sender_id)
+    sender.balance -= price
+    sender.save()
+    reciever = Wallet.objects.get(id_number=reciever_id)
+    reciever.balance += price
+    reciever.save()
+
 
 class MovieApi(Resource):
     def put(self, id):
