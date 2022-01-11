@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Vehicle} from "../../models/Vehicle";
 import {Router} from "@angular/router";
+import {BackendService} from "../../services/backend.service";
 
 @Component({
   selector: 'app-all-vehicles',
@@ -9,18 +10,28 @@ import {Router} from "@angular/router";
 })
 export class AllVehiclesComponent implements OnInit {
 
-  constructor(private router: Router) { }
-
-  temp = [
-    new Vehicle(1,"bike","penis","model1","asd",66),
-    new Vehicle(2,"car","penisdd","model2","asd",66),
-    new Vehicle(3,"bike","penisss","model3","asd",66),
-  ]
+  constructor(private service: BackendService, private router: Router){}
+  temp:any;
+  allListings:any;
   ngOnInit(): void {
+    this.service.getAllVehicles().subscribe(res=>{this.temp=res})
+    this.service.getAllListing().subscribe(res=> {
+      this.allListings = res;
+    })
   }
 
   viewVehicle(car: any){
-    this.router.navigateByUrl("/view/" + car.id)
+    for(let i = 0; i < this.allListings.length; i++){
+      if(this.allListings[i].vehicle == car.id_number){
+        console.log(this.allListings[i].id_number)
+        console.log(car)
+        this.service.nextListingId(this.allListings[i].id_number)
+        this.service.nextCar(car)
+        this.router.navigateByUrl("/view/" + car.id)
+      }
+    }
+
+
   }
 
 }

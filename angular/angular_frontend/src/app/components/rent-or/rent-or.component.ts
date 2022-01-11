@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {BackendService} from "../../services/backend.service";
 
 @Component({
   selector: 'app-rent-or',
@@ -7,8 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RentOrComponent implements OnInit {
 
-  constructor() { }
+  constructor(private service: BackendService) { }
 
+  canPost = true;
   newUser : any;
 
   ngOnInit(): void {
@@ -16,6 +18,10 @@ export class RentOrComponent implements OnInit {
   addNewUser(){
     if(this.newUser != null && this.newUser.length != 0){
       //klic na bazo za dodajanje novega userja
+      this.service.createWallet(this.newUser).subscribe(data => this.service.nextId(data))
+      this.canPost = false;
+
     }
   }
+
 }

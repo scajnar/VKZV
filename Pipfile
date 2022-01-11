@@ -9,6 +9,7 @@ flask-mongoengine = "*"
 mongoengine = "*"
 flask-restful = "*"
 names = "*"
+requests = "*"
 
 [dev-packages]
 

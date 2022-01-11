@@ -17,7 +17,7 @@ class Car(Vehicle):
         self.brand = brand
         self.model = model
         self.horsepower = horsepower
-        self.id = secrets.randbelow(99999)
+        self.id_number = secrets.randbelow(99999)
         super().__init__(name)
 
     def get_brand(self):
@@ -28,6 +28,19 @@ class Car(Vehicle):
 
     def get_horsepower(self):
         return self.horsepower
+
+    def get_id_number(self):
+        return self.id_number;
+
+    def get_vehicle_data(self):
+        val = {
+            "name": self.name,
+            "brand": self.brand,
+            "model": self.model,
+            "horsepower": self.horsepower,
+            "id_number": self.id_number
+        }
+        return val
 
 class Bike(Vehicle):
 
